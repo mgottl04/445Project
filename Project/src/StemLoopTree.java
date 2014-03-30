@@ -1,3 +1,5 @@
+import java.util.List;
+
 
 public class StemLoopTree {
 
@@ -7,56 +9,76 @@ public class StemLoopTree {
 		RIGHT_LEAF,
 		TERM_LEAF
 	}
+
+	private List<StemLoopStructureNode> nodes;
 	
-	public StemLoopTreeNode getRoot() {
+	private StemLoopTree(String seq, String struct) {
+		
+	}
+
+	public StemLoopStructureNode getRoot() {
+		return null;
 		
 	}
 	
-	public StemLoopTreeNode[] getAllNodes() {
+	public List<StemLoopStructureNode> getAllNodes() {
+		return this.nodes;
 		
 	}
 	
-	public NodeType getType(StemLoopTreeNode node) {
+	public NodeType getType(StemLoopStructureNode node) {
+		return null;
 		
 	}
 	
 	// get left leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getLeftLeaves(StemLoopTreeNode internalNode) {
+	public StemLoopStructureNode[] getLeftLeaves(StemLoopStructureNode internalNode) {
+		return null;
 		
 	}
 	
 	// get right leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getRightLeaves(StemLoopTreeNode internalNode) {
+	public StemLoopStructureNode[] getRightLeaves(StemLoopStructureNode internalNode) {
+		return null;
 		
 	}	
 	
 	// get terminal leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getTerminalLeaves(StemLoopTreeNode internalNode) {
+	public StemLoopStructureNode[] getTerminalLeaves(StemLoopStructureNode internalNode) {
+		return null;
 		
 	}
 	
 	// get internal node child (throw exception if there is no internal child node)
-	public StemLoopTreeNode getInternalChild(StemLoopTreeNode internalNode) {
+	public StemLoopStructureNode getInternalChild(StemLoopStructureNode internalNode) {
+		return internalNode;
 		
 	}
 	
 	// is this the last internal node? (i.e. does not have an internal node child) (throw exception if not internal node)
-	public boolean isTerminal(StemLoopTreeNode internalNode) {
-		
+	public boolean isTerminal(StemLoopStructureNode internalNode) {
+		return internalNode.equals(nodes.get(nodes.size()-1));
 	}
 	
 	// get predecessor (return NULL if undefined)
-	public StemLoopTreeNode p(StemLoopTreeNode node) {
+	public StemLoopStructureNode p(StemLoopStructureNode node) {
+		return node;
 		
 	}
 	
 	// get successor (return NULL if undefined)
-	public StemLoopTreeNode s(StemLoopTreeNode node) {
+	public StemLoopStructureNode s(StemLoopStructureNode node) {
+		return node;
 		
 	}
 	
 	// get subtree defined by indexing pair
-	public StemLoopTree subtree(StemLoopTreeNode a, StemLoopTreeNode b) {
+	public StemLoopTree subtree(StemLoopStructureNode a, StemLoopStructureNode b) {
+		return null;
 		
+	}
+
+	public static StemLoopTree getTree(String seq, String struct) {		
+		return new StemLoopTree(seq, struct);
 	}
 }
