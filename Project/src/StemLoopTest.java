@@ -47,7 +47,7 @@ public class StemLoopTest {
 	public void testTreeCreation() {
 		StemLoopTreeModel tree = StemLoopTreeModel.getModel(TEST_SEQ, TEST_STRUCT);
 		String s = "aa";
-		// assertTrue(tree.getAllNodes().get(1) instanceof StemLoopTreeNode);
+		assertTrue(tree.getNodes().get(1) instanceof StemLoopStructureNode);
 
 	}
 

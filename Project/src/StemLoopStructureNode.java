@@ -31,10 +31,9 @@ public class StemLoopStructureNode {
 		return terminalChildren;
 	}
 
-	public static StemLoopStructureNode getInstance(String bp, String lc, String rc,
-			String tc) {
-		if ((bp.equals("root") && !tc.equals(""))
-				|| (!tc.equals("") && (!lc.equals("") || !rc.equals(""))))
+	public static StemLoopStructureNode getInstance(String bp, String lc,
+			String rc, String tc) {
+		if (!tc.equals("") && (!lc.equals("") || !rc.equals("")))
 			throw new InvalidParameterException();
 		return new StemLoopStructureNode(bp, lc, rc, tc);
 	}
