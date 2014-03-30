@@ -12,6 +12,10 @@ public class StemLoopTree {
 		
 	}
 	
+	public StemLoopTreeNode[] getAllNodes() {
+		
+	}
+	
 	public NodeType getType(StemLoopTreeNode node) {
 		
 	}
@@ -41,12 +45,12 @@ public class StemLoopTree {
 		
 	}
 	
-	// get predecessor
+	// get predecessor (return NULL if undefined)
 	public StemLoopTreeNode p(StemLoopTreeNode node) {
 		
 	}
 	
-	// get successor
+	// get successor (return NULL if undefined)
 	public StemLoopTreeNode s(StemLoopTreeNode node) {
 		
 	}

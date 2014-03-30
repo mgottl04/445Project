@@ -9,6 +9,60 @@ public class StemLoopAligner {
 		ArrayList<StemLoopTreeNode[]> indexingPairsA = getIndexingPairs(a, a.getRoot());
 		ArrayList<StemLoopTreeNode[]> indexingPairsB = getIndexingPairs(b, b.getRoot());
 		
+		// Insert a NULL indexing pair at the beginning of each
+		indexingPairsA.add(0,null);
+		indexingPairsB.add(0,null);
+		
+		// Initialize table
+		double[][] D = new double[indexingPairsA.size()][indexingPairsB.size()];
+		D[0][0] = 0;
+		for (int i = 0; i < indexingPairsA.size(); i++) {
+			StemLoopTreeNode[] currentPair = indexingPairsA.get(i);
+			double currentPairCost = 0;
+			for (StemLoopTreeNode node : a.subtree(currentPair[0], currentPair[1]).getAllNodes()) {
+				currentPairCost += EditCosts.deleteCost(node);
+			}
+			D[i][0] = currentPairCost;
+		}
+		for (int j = 0; j < indexingPairsB.size(); j++) {
+			StemLoopTreeNode[] currentPair = indexingPairsB.get(j);
+			double currentPairCost = 0;
+			for (StemLoopTreeNode node : b.subtree(currentPair[0], currentPair[1]).getAllNodes()) {
+				currentPairCost += EditCosts.deleteCost(node);
+			}
+			D[0][j] = currentPairCost;
+		}
+		
+		// Fill out the table
+		for (int i = 1; i < indexingPairsA.size(); i++) {
+			StemLoopTree.NodeType typeA1 = a.getType(indexingPairsA.get(i)[0]);
+			StemLoopTree.NodeType typeA2 = a.getType(indexingPairsA.get(i)[1]);
+			boolean bothAInternal = (typeA1 == StemLoopTree.NodeType.INTERNAL) && (typeA2 == StemLoopTree.NodeType.INTERNAL);
+			for (int j = 1; i < indexingPairsB.size(); i++) {
+				StemLoopTree.NodeType typeB1 = a.getType(indexingPairsB.get(j)[0]);
+				StemLoopTree.NodeType typeB2 = a.getType(indexingPairsB.get(j)[1]);
+				boolean bothBInternal = (typeB1 == StemLoopTree.NodeType.INTERNAL) && (typeB2 == StemLoopTree.NodeType.INTERNAL);
+				
+				if (bothAInternal && bothBInternal) {
+					// do case 1
+				}
+				
+				else if (bothAInternal) {
+					// do case 3
+				}
+				
+				else if (bothBInternal) {
+					// do case 4
+				}
+				
+				else {
+					// do case 2
+				}
+			}
+		}
+		
+		
+		
 		return 0.0;
 	}
 	
