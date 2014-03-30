@@ -23,37 +23,41 @@ public class StemLoopAligner {
 		// Add indexing pair for self (case 1)
 		indexingPairs.add(new StemLoopTreeNode[] {node,node});
 		
-		// Handle leaves
-		StemLoopTreeNode[] leftLeaves = tree.getLeftLeaves(node);
-		StemLoopTreeNode[] rightLeaves = tree.getRightLeaves(node);
-		StemLoopTreeNode[] terminalLeaves = tree.getTerminalLeaves(node);
+		if (tree.isTerminal(node)) {
+			StemLoopTreeNode[] terminalLeaves = tree.getTerminalLeaves(node);
+			
+			// Add indexing pairs for terminal leaves (case 5)
+			for (int i = 0; i < terminalLeaves.length; i++) {
+				for (int j = i + 1; j < terminalLeaves.length; j++) {
+					indexingPairs.add(new StemLoopTreeNode[] {terminalLeaves[i],terminalLeaves[j]});
+				}
+			}
+		}
 		
-		// Add indexing pairs for left/right leaf pairs (case 4)
-		for (int i = 0; i < leftLeaves.length; i++) {
+		else {
+			StemLoopTreeNode[] leftLeaves = tree.getLeftLeaves(node);
+			StemLoopTreeNode[] rightLeaves = tree.getRightLeaves(node);
+			
+			// Add indexing pairs for left/right leaf pairs (case 4)
+			for (int i = 0; i < leftLeaves.length; i++) {
+				for (int j = rightLeaves.length - 1; j > -1; j--) {
+					indexingPairs.add(new StemLoopTreeNode[] {leftLeaves[i],rightLeaves[j]});
+				}
+			}
+				
+			// Add indexing pairs of left leaf and internal node (case 3)
+			for (int i = 0; i < leftLeaves.length; i++) {
+				indexingPairs.add(new StemLoopTreeNode[] {leftLeaves[i],node});
+			}
+				
+			// Add indexing pairs of internal node and right leaf (case 2)
 			for (int j = rightLeaves.length - 1; j > -1; j--) {
-				indexingPairs.add(new StemLoopTreeNode[] {leftLeaves[i],rightLeaves[j]});
+				indexingPairs.add(new StemLoopTreeNode[] {node,rightLeaves[j]});
 			}
-		}
 			
-		// Add indexing pairs of left leaf and internal node (case 3)
-		for (int i = 0; i < leftLeaves.length; i++) {
-			indexingPairs.add(new StemLoopTreeNode[] {leftLeaves[i],node});
+			// Recursively add indexing pairs for internal node children
+			indexingPairs.addAll(getIndexingPairs(tree,tree.getInternalChild(node)));
 		}
-			
-		// Add indexing pairs of internal node and right leaf (case 2)
-		for (int j = rightLeaves.length - 1; j > -1; j--) {
-			indexingPairs.add(new StemLoopTreeNode[] {node,rightLeaves[j]});
-		}
-		
-		// Add indexing pairs for terminal leaves (case 5)
-		for (int i = 0; i < terminalLeaves.length; i++) {
-			for (int j = i + 1; j < terminalLeaves.length; j++) {
-				indexingPairs.add(new StemLoopTreeNode[] {terminalLeaves[i],terminalLeaves[j]});
-			}
-		}
-		
-		// Recursively add indexing pairs for internal node children
-		indexingPairs.addAll(getIndexingPairs(tree,tree.getInternalChild(node)));
 		
 		return indexingPairs;
 	}

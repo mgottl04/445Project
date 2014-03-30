@@ -17,22 +17,27 @@ public class StemLoopTree {
 	}
 	
 	// get left leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getLeftLeaves(StemLoopTreeNode node) {
+	public StemLoopTreeNode[] getLeftLeaves(StemLoopTreeNode internalNode) {
 		
 	}
 	
 	// get right leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getRightLeaves(StemLoopTreeNode node) {
+	public StemLoopTreeNode[] getRightLeaves(StemLoopTreeNode internalNode) {
 		
 	}	
 	
 	// get terminal leaves (order matters) (throw exception if not internal node)
-	public StemLoopTreeNode[] getTerminalLeaves(StemLoopTreeNode node) {
+	public StemLoopTreeNode[] getTerminalLeaves(StemLoopTreeNode internalNode) {
 		
 	}
 	
-	// get internal node child (throw exception if not internal node)
-	public StemLoopTreeNode getInternalChild(StemLoopTreeNode node) {
+	// get internal node child (throw exception if there is no internal child node)
+	public StemLoopTreeNode getInternalChild(StemLoopTreeNode internalNode) {
+		
+	}
+	
+	// is this the last internal node? (i.e. does not have an internal node child) (throw exception if not internal node)
+	public boolean isTerminal(StemLoopTreeNode internalNode) {
 		
 	}
 	
