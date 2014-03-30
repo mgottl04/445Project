@@ -3,14 +3,44 @@ import java.util.List;
 
 public class DotBracketParser {
 
-	// String TEST_SEQ = "GAGUACAAUAUGUACCG";
-	// String TEST_STRUCT = "..((((.....))))..";
-
 	public static List<StemLoopStructureNode> getNodes(String seq, String struct) {
-		List<StemLoopStructureNode> nodes = new ArrayList<StemLoopStructureNode>();
+		List<StemLoopStructureNode> result = new ArrayList<StemLoopStructureNode>();
 		// get indices of (('s
-		StemLoopStructureNode root = new StemLoopStructureNode("root","","","");
-		return nodes;
-	}
+		List<Integer> openIndices = new ArrayList<Integer>();
+		List<Integer> closeIndices = new ArrayList<Integer>();
 
+		int i = 0;
+		for (char c : struct.toCharArray()) {
+			if (c == '(') {
+				openIndices.add(i);
+			} else if (c == ')') {
+				closeIndices.add(0, i);
+			}
+			i++;
+		}
+
+		StemLoopStructureNode root = new StemLoopStructureNode("root",
+				seq.substring(0, openIndices.get(0)), seq.substring(
+						closeIndices.get(0) + 1, seq.length()), "");
+		result.add(root);
+		for (int j = 0; j < openIndices.size() - 1; j++) {
+			String bp = String.valueOf(seq.charAt(openIndices.get(j)))
+					+ String.valueOf(seq.charAt(closeIndices.get(j)));
+			String lc = seq.substring(openIndices.get(j) + 1,
+					openIndices.get(j + 1));
+			String rc = seq.substring(closeIndices.get(j + 1) + 1,
+					closeIndices.get(j));
+			StemLoopStructureNode node = new StemLoopStructureNode(bp, lc, rc,
+					"");
+			result.add(node);
+		}
+		StemLoopStructureNode terminus = new StemLoopStructureNode(
+				String.valueOf(seq.charAt(openIndices.get(openIndices.size() - 1)))
+						+ String.valueOf(seq.charAt(closeIndices
+								.get(closeIndices.size() - 1))), "", "",
+				seq.substring(openIndices.get(openIndices.size() - 1) + 1,
+						closeIndices.get(closeIndices.size() - 1)));
+		result.add(terminus);
+		return result;
+	}
 }

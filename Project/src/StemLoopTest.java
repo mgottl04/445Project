@@ -7,13 +7,15 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class StemLoopTest {
-	String TEST_SEQ = "GAGUACAAUAUGUACCG";
-	String TEST_STRUCT = "..((((.....))))..";
+	String TEST_SEQ = "GAGXUACAAUAUGUATCCG";
+	String TEST_STRUCT = "..(.(((.....))).)..";
+	String TEST_SEQ2 = "GCGACUACCGUCGAGUAUGGC";
+	String TEST_STRUCT2 ="..(.(((.(.....)..))))"; 
 	ExpectedException e = ExpectedException.none();
 
 	@Test
 	public void testDataEntry() {
-		assertEquals(TEST_SEQ.length(), TEST_STRUCT.length());
+		assertEquals(TEST_SEQ2.length(), TEST_STRUCT2.length());
 		;
 	}
 
@@ -45,7 +47,7 @@ public class StemLoopTest {
 
 	@Test
 	public void testTreeCreation() {
-		StemLoopTreeModel tree = StemLoopTreeModel.getModel(TEST_SEQ, TEST_STRUCT);
+		StemLoopTreeModel tree = StemLoopTreeModel.getModel(TEST_SEQ2, TEST_STRUCT2);
 		String s = "aa";
 		assertTrue(tree.getNodes().get(1) instanceof StemLoopStructureNode);
 
