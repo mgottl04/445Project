@@ -1,13 +1,13 @@
 import java.security.InvalidParameterException;
 
-public class StemLoopStructureNode {
+public class StemLoopModelNode {
 
 	private final String boundPair;
 	private final String leftChildren;
 	private final String rightChildren;
 	private final String terminalChildren;
 
-	public StemLoopStructureNode(String bp, String lc, String rc, String tc) {
+	public StemLoopModelNode(String bp, String lc, String rc, String tc) {
 		boundPair = bp;
 		leftChildren = lc;
 		rightChildren = rc;
@@ -31,11 +31,11 @@ public class StemLoopStructureNode {
 		return terminalChildren;
 	}
 
-	public static StemLoopStructureNode getInstance(String bp, String lc,
+	public static StemLoopModelNode getInstance(String bp, String lc,
 			String rc, String tc) {
 		if (!tc.equals("") && (!lc.equals("") || !rc.equals("")))
 			throw new InvalidParameterException();
-		return new StemLoopStructureNode(bp, lc, rc, tc);
+		return new StemLoopModelNode(bp, lc, rc, tc);
 	}
 
 	public boolean hasTerminalChildren() {

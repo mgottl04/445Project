@@ -3,8 +3,8 @@ import java.util.List;
 
 public class DotBracketParser {
 
-	public static List<StemLoopStructureNode> getNodes(String seq, String struct) {
-		List<StemLoopStructureNode> result = new ArrayList<StemLoopStructureNode>();
+	public static List<StemLoopModelNode> getNodes(String seq, String struct) {
+		List<StemLoopModelNode> result = new ArrayList<StemLoopModelNode>();
 		// get indices of (('s
 		List<Integer> openIndices = new ArrayList<Integer>();
 		List<Integer> closeIndices = new ArrayList<Integer>();
@@ -19,7 +19,7 @@ public class DotBracketParser {
 			i++;
 		}
 
-		StemLoopStructureNode root = new StemLoopStructureNode("root",
+		StemLoopModelNode root = new StemLoopModelNode("root",
 				seq.substring(0, openIndices.get(0)), seq.substring(
 						closeIndices.get(0) + 1, seq.length()), "");
 		result.add(root);
@@ -30,11 +30,11 @@ public class DotBracketParser {
 					openIndices.get(j + 1));
 			String rc = seq.substring(closeIndices.get(j + 1) + 1,
 					closeIndices.get(j));
-			StemLoopStructureNode node = new StemLoopStructureNode(bp, lc, rc,
+			StemLoopModelNode node = new StemLoopModelNode(bp, lc, rc,
 					"");
 			result.add(node);
 		}
-		StemLoopStructureNode terminus = new StemLoopStructureNode(
+		StemLoopModelNode terminus = new StemLoopModelNode(
 				String.valueOf(seq.charAt(openIndices.get(openIndices.size() - 1)))
 						+ String.valueOf(seq.charAt(closeIndices
 								.get(closeIndices.size() - 1))), "", "",

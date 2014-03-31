@@ -25,9 +25,9 @@ public class StemLoopTest {
 		String leftChildren = "CAA";
 		String rightChildren = "UU";
 		String terminalChildren = "AA";
-		StemLoopStructureNode node = StemLoopStructureNode.getInstance(boundPair,
+		StemLoopModelNode node = StemLoopModelNode.getInstance(boundPair,
 				leftChildren, rightChildren, terminalChildren);
-		node = StemLoopStructureNode.getInstance("root", leftChildren,
+		node = StemLoopModelNode.getInstance("root", leftChildren,
 				rightChildren, terminalChildren);
 	}
 
@@ -35,7 +35,7 @@ public class StemLoopTest {
 	public void testNodeCreation() {
 		String boundPair = "CG";
 		String terminalChildren = "AA";
-		StemLoopStructureNode node = StemLoopStructureNode.getInstance(boundPair, "", "",
+		StemLoopModelNode node = StemLoopModelNode.getInstance(boundPair, "", "",
 				"AA");
 		assertEquals(node.getBoundPair(), boundPair);
 		assertEquals(node.getTerminalChildren(), terminalChildren);
@@ -47,9 +47,9 @@ public class StemLoopTest {
 
 	@Test
 	public void testTreeCreation() {
-		StemLoopTreeModel tree = StemLoopTreeModel.getModel(TEST_SEQ2, TEST_STRUCT2);
+		StemLoopModel tree = StemLoopModel.getModel(TEST_SEQ2, TEST_STRUCT2);
 		String s = "aa";
-		assertTrue(tree.getNodes().get(1) instanceof StemLoopStructureNode);
+		assertTrue(tree.getNodes().get(1) instanceof StemLoopModelNode);
 
 	}
 
