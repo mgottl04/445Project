@@ -52,5 +52,12 @@ public class StemLoopTest {
 		assertTrue(tree.getNodes().get(1) instanceof StemLoopModelNode);
 
 	}
+	@Test
+	public void testHowJavaWorks(){
+		int[] a = {4};
+		int[] b = {4};
+		assertFalse(a.equals(b));
+	}
 
+	
 }

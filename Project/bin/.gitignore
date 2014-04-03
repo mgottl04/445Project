@@ -1,13 +1,3 @@
-/DotBracketParser.class
-/EditCosts.class
-/StemLoopAligner.class
-/StemLoopStructureNode.class
-/StemLoopTest.class
-/StemLoopTree$NodeType.class
-/StemLoopTree.class
-/StemLoopTreeModel.class
-/StemLoopNode.class
-/StemLoopModelNode.class
-/StemLoopModel.class
-/StemLoop$NodeType.class
-/StemLoop.class
+/StemLoopAligner$IndexPair.class
+/StemLoopAligner$IndexingPair.class
+/IndexingPair.class
