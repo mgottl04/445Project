@@ -10,7 +10,7 @@ public class StemLoopTest {
 	String TEST_SEQ = "GAGXUACAAUAUGUATCCG";
 	String TEST_STRUCT = "..(.(((.....))).)..";
 	String TEST_SEQ2 = "GCGACUACCGUCGAGUAUGGC";
-	String TEST_STRUCT2 ="..(.(((.(.....)..))))"; 
+	String TEST_STRUCT2 = "..(.(((.(.....)..))))";
 	ExpectedException e = ExpectedException.none();
 
 	@Test
@@ -35,14 +35,14 @@ public class StemLoopTest {
 	public void testNodeCreation() {
 		String boundPair = "CG";
 		String terminalChildren = "AA";
-		StemLoopModelNode node = StemLoopModelNode.getInstance(boundPair, "", "",
-				"AA");
+		StemLoopModelNode node = StemLoopModelNode.getInstance(boundPair, "",
+				"", "AA");
 		assertEquals(node.getBoundPair(), boundPair);
 		assertEquals(node.getTerminalChildren(), terminalChildren);
-		assertTrue(node.hasTerminalChildren());	
+		assertTrue(node.hasTerminalChildren());
 		assertFalse(node.hasLeftChildren());
 		assertFalse(node.hasRightChildren());
-		
+
 	}
 
 	@Test
@@ -52,12 +52,15 @@ public class StemLoopTest {
 		assertTrue(tree.getNodes().get(1) instanceof StemLoopModelNode);
 
 	}
+
 	@Test
-	public void testHowJavaWorks(){
-		int[] a = {4};
-		int[] b = {4};
+	public void testHowJavaWorks() {
+		int[] a = { 4 };
+		int[] b = { 4 };
 		assertFalse(a.equals(b));
+		String j = "ab";
+		System.out.println(j.substring(0, 1));
+		System.out.println(j.substring(1, 2));
 	}
 
-	
 }

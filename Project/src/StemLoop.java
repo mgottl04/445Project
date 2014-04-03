@@ -1,64 +1,55 @@
 import java.util.List;
-import StemLoopNode;
-import StemLoopNode.NodeType;
 
 public class StemLoop {
 
-
-
-	private List<StemLoopNode> nodes;
+	StemLoopNode[] nodes;
 	private StemLoopModel model;
+	private String id;
 
-	private StemLoop(StemLoopModel m) {
-
+	private StemLoop(StemLoopModel m, String i) {
 		model = m;
+		nodes = m.modelNodesToNodes(i);
+		this.id = i;
 
-	}
-
-	public StemLoop(String seq, String struct) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public StemLoopNode getRoot() {
-		return new StemLoopNode(model.getRoot());
+		return new StemLoopNode(model.getRoot().getBoundPair(),
+				StemLoopNode.NodeType.INTERNAL, model.getRoot()
+						.getLeftChildren());
 	}
 
-	public List<StemLoopNode> getAllNodes() {
+	public StemLoopNode[] getAllNodes() {
 		return this.nodes;
 
 	}
 
-	public NodeType getType(StemLoopNode node) {
-		return node.getType();
-
-	}
-
 	// get left leaves (order matters) (throw exception if not internal node)
-	public StemLoopNode[] getLeftLeaves(
-			StemLoopNode internalNode) {
+	public StemLoopNode[] getLeftLeaves(StemLoopNode internalNode) {
 		return null;
 
 	}
 
 	// get right leaves (order matters) (throw exception if not internal node)
-	public StemLoopNode[] getRightLeaves(
-			StemLoopNode internalNode) {
+	public StemLoopNode[] getRightLeaves(StemLoopNode internalNode) {
 		return null;
 
 	}
 
 	// get terminal leaves (order matters) (throw exception if not internal
 	// node)
-	public StemLoopNode[] getTerminalLeaves(
-			StemLoopNode internalNode) {
-		return null;
+	public String getTerminalLeaves(StemLoopNode internalNode) {
+		return model.getTerminalLeaves();
 
+	}
+
+	private StemLoopNode[] getStemLoopNodes(char[] nodes) {
+		return null;
 	}
 
 	// get internal node child (throw exception if there is no internal child
 	// node)
-	public StemLoopNode getInternalChild(
-			StemLoopNode internalNode) {
+	public StemLoopNode getInternalChild(StemLoopNode internalNode) {
 		return internalNode;
 
 	}
@@ -71,23 +62,34 @@ public class StemLoop {
 
 	// get predecessor (return NULL if undefined)
 	public StemLoopNode p(StemLoopNode node) {
-		return node;
+		return node.getPredecessor();
 
 	}
 
 	// get successor (return NULL if undefined)
 	public StemLoopNode s(StemLoopNode node) {
-		return node;
+		return node.getPredecessor();
 
 	}
 
-	// get subtree defined by indexing pair
-	public StemLoop subtree(StemLoopNode a, StemLoopNode b) {
+	// DONE
+	// DONE
+
+	// DONE
+
+	// DONE
+
+	// DONE
+
+	// DONE
+
+	public StemLoopNode.NodeType getType(StemLoopNode node) {
+		return node.getType();
+
+	}
+
+	public StemLoop subtree(StemLoopNode nodeA, StemLoopNode nodeB) {
+		// TODO Auto-generated method stub
 		return null;
-
-	}
-
-	public static StemLoop getTree(String seq, String struct) {
-		return new StemLoop(seq, struct);
 	}
 }
