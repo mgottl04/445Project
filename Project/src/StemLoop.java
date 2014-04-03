@@ -1,10 +1,10 @@
 import java.util.List;
+import StemLoopNode;
+import StemLoopNode.NodeType;
 
 public class StemLoop {
 
-	public enum NodeType {
-		INTERNAL, LEFT_LEAF, RIGHT_LEAF, TERM_LEAF
-	}
+
 
 	private List<StemLoopNode> nodes;
 	private StemLoopModel model;
@@ -20,7 +20,7 @@ public class StemLoop {
 	}
 
 	public StemLoopNode getRoot() {
-		return null;
+		return new StemLoopNode(model.getRoot());
 	}
 
 	public List<StemLoopNode> getAllNodes() {
@@ -29,7 +29,7 @@ public class StemLoop {
 	}
 
 	public NodeType getType(StemLoopNode node) {
-		return null;
+		return node.getType();
 
 	}
 

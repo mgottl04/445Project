@@ -17,8 +17,8 @@ public class StemLoopModel {
 		return nodes;
 	}
 
-	public void getRoot() {
-		// TODO Auto-generated method stub
+	public StemLoopModelNode getRoot() {
+		return nodes.get(0);
 		
 	}
 
