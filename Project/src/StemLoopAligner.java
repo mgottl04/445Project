@@ -194,7 +194,10 @@ public class StemLoopAligner {
 				for (int j = i + 1; j < terminalLeaves.length; j++) {
 					indexingPairs.add(new IndexingPair(terminalLeaves[i],
 							terminalLeaves[j]));
-					if ()
+					if (j == i + 1) {
+						termIndexingPairs.add(new IndexingPair(terminalLeaves[i],
+								terminalLeaves[j]));
+					}
 				}
 			}
 		}
@@ -227,22 +230,6 @@ public class StemLoopAligner {
 		}
 	}
 
-<<<<<<< HEAD
-=======
-	private static double doCase1(double[][] table, StemLoop a, StemLoop b,
-			StemLoopNode x, StemLoopNode y, StemLoopNode u, StemLoopNode v) {
-
-		StemLoopNode predx = a.p(x);
-		StemLoopNode succy = a.s(y);
-		StemLoopNode predu = b.p(u);
-		StemLoopNode succv = b.s(v);
-
-		IndexingPair u_v = new IndexingPair(u, v);
-		IndexingPair px_y = new IndexingPair(predx, y);
-		return 0.0;
-	}
-
->>>>>>> 572e07e638ce2bdb36b52b42ea0c6ac6fbd7ee99
 	private static double multiMin(double... ds) {
 		double min = -Math.log(0);
 		for (double d : ds) {
