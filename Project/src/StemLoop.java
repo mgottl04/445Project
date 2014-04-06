@@ -181,8 +181,180 @@ public class StemLoop {
 	}
 
 	public StemLoop subtree(StemLoopNode nodeA, StemLoopNode nodeB) {
-		// TODO Auto-generated method stub
-		return null;
+		List<StemLoopNode> result = new ArrayList<StemLoopNode>();
+		StemLoopNode.NodeType typeA = nodeA.getType();
+		StemLoopNode.NodeType typeB = nodeB.getType();
+		// case 1 : nodeB == nodeA
+		if (nodeA.equals(nodeB)) {
+			for (StemLoopNode n : nodes) {
+				result.add(n);
+				if (n.equals(nodeA))
+					break;
+			}
+		}
+		// case2 : nodeA is parent to nodeB
+		else if (getParent(nodeB).equals(nodeA)) {
+			boolean aSeen = false;
+			boolean bSeen = false;
+			if (nodeB.getType() == StemLoopNode.NodeType.RIGHT_LEAF) {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeB))
+						bSeen = true;
+					if (!aSeen) {
+						result.add(n);
+					} else {
+						if (n.getType() == StemLoopNode.NodeType.LEFT_LEAF)
+							continue;
+						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+							break;
+						if (n.getType() == StemLoopNode.NodeType.RIGHT_LEAF) {
+							if (!bSeen)
+								continue;
+							else {
+								result.add(n);
+							}
+
+						}
+					}
+					if (n.equals(nodeA))
+						aSeen = true;
+				}
+
+			} else if (nodeB.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeB))
+						bSeen = true;
+					if (!aSeen || bSeen) {
+						result.add(n);
+					} else {
+						continue;
+					}
+					if (n.equals(nodeA))
+						aSeen = true;
+				}
+			}
+		}
+		// case3 : nodeB is parent to nodeA
+		else if (getParent(nodeA).equals(nodeB)) {
+			boolean bSeen = false;
+			boolean aSeen = false;
+			if (nodeA.getType() == StemLoopNode.NodeType.RIGHT_LEAF) {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeA))
+						aSeen = true;
+					if (!bSeen) {
+						result.add(n);
+					} else {
+						if (n.getType() == StemLoopNode.NodeType.LEFT_LEAF)
+							continue;
+						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+							break;
+						if (n.getType() == StemLoopNode.NodeType.RIGHT_LEAF) {
+							if (!aSeen)
+								continue;
+							else {
+								result.add(n);
+							}
+
+						}
+					}
+					if (n.equals(nodeB))
+						bSeen = true;
+				}
+
+			} else if (nodeA.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeA))
+						aSeen = true;
+					if (!bSeen || aSeen) {
+						result.add(n);
+					} else {
+						continue;
+					}
+					if (n.equals(nodeB))
+						bSeen = true;
+				}
+			}
+		}
+		// case4 : nodeA & nodeB both same type of leaves to same parent
+		if (getParent(nodeA).equals(getParent(nodeB))
+				&& nodeA.getType() == nodeB.getType()) {
+			boolean aSeen = false;
+			boolean bSeen = false;
+
+			for (StemLoopNode n : nodes) {
+				if ((aSeen & !bSeen) || (!aSeen && bSeen)) {
+					if (n.equals(nodeB))
+						bSeen = true;
+					if (n.equals(nodeA))
+						aSeen = true;
+					if ((aSeen & !bSeen) || (!aSeen && bSeen))
+						continue;
+				}
+				result.add(n);
+				if (n.equals(nodeB))
+					bSeen = true;
+				if (n.equals(nodeA))
+					aSeen = true;
+
+			}
+		}
+		// case5 : nodeA & nodeB are leaves to same parent, but different types
+		// of nodes
+		else {
+			boolean aSeen = false;
+			boolean bSeen = false;
+			if (nodeA.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeB))
+						bSeen = true;
+					if (bSeen) {
+						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+							break;
+					}
+					if (aSeen & !bSeen)
+						continue;
+
+					if (n.equals(nodeA))
+						aSeen = true;
+				}
+			} else {
+				for (StemLoopNode n : nodes) {
+					if (n.equals(nodeA))
+						aSeen = true;
+					if (aSeen) {
+						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+							break;
+					}
+					if (bSeen & !aSeen)
+						continue;
+
+					if (n.equals(nodeB))
+						bSeen = true;
+				}
+			}
+		}
+
+		return new StemLoop(model, (StemLoopNode[]) result.toArray(), id
+				+ "sub" + nodeA.getId() + nodeB.getId());
 	}
 
+	private StemLoop(StemLoopModel m, StemLoopNode[] n, String i) {
+		model = m;
+		nodes = n;
+		id = i;
+	}
+
+	private StemLoopNode getParent(StemLoopNode node) {
+		StemLoopNode parent = null;
+		for (StemLoopNode n : nodes) {
+			if (n.equals(node))
+				break;
+			if (n.getType() == StemLoopNode.NodeType.INTERNAL) {
+				parent = n;
+			}
+		}
+		return parent;
+
+	}
 }
