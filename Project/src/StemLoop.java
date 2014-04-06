@@ -7,12 +7,21 @@ public class StemLoop {
 	StemLoopNode[] nodes;
 	private StemLoopModel model;
 	private String id;
+	private boolean isEmpty;
 
 	private StemLoop(StemLoopModel m, String i) {
 		model = m;
 		nodes = m.modelNodesToNodes(i);
 		this.id = i;
-
+		isEmpty = false;
+	}
+	
+	public StemLoop() {
+		isEmpty = true;
+	}
+	
+	public boolean isEmpty() {
+		return isEmpty;
 	}
 
 	public StemLoopNode getRoot() {
@@ -355,6 +364,5 @@ public class StemLoop {
 			}
 		}
 		return parent;
-
 	}
 }

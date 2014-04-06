@@ -3,6 +3,10 @@ import java.util.List;
 
 public class DotBracketParser {
 
+	public static ArrayList<StemLoop> getStemLoops(String seq) {
+		return new ArrayList<StemLoop>();
+	}
+	
 	public static List<StemLoopModelNode> getNodes(String seq, String struct) {
 		List<StemLoopModelNode> result = new ArrayList<StemLoopModelNode>();
 		// get indices of (('s
