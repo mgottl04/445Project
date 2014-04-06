@@ -18,11 +18,12 @@ public class DotBracketParser {
 			}
 			i++;
 		}
-
-		StemLoopModelNode root = new StemLoopModelNode("root",
-				seq.substring(0, openIndices.get(0)), seq.substring(
-						closeIndices.get(0) + 1, seq.length()), "");
-		result.add(root);
+		if (openIndices.get(0) != 0) {
+			StemLoopModelNode root = new StemLoopModelNode("root",
+					seq.substring(0, openIndices.get(0)), seq.substring(
+							closeIndices.get(0) + 1, seq.length()), "");
+			result.add(root);
+		}
 		for (int j = 0; j < openIndices.size() - 1; j++) {
 			String bp = String.valueOf(seq.charAt(openIndices.get(j)))
 					+ String.valueOf(seq.charAt(closeIndices.get(j)));
@@ -30,16 +31,15 @@ public class DotBracketParser {
 					openIndices.get(j + 1));
 			String rc = seq.substring(closeIndices.get(j + 1) + 1,
 					closeIndices.get(j));
-			StemLoopModelNode node = new StemLoopModelNode(bp, lc, rc,
-					"");
+			StemLoopModelNode node = new StemLoopModelNode(bp, lc, rc, "");
 			result.add(node);
 		}
-		StemLoopModelNode terminus = new StemLoopModelNode(
-				String.valueOf(seq.charAt(openIndices.get(openIndices.size() - 1)))
-						+ String.valueOf(seq.charAt(closeIndices
-								.get(closeIndices.size() - 1))), "", "",
-				seq.substring(openIndices.get(openIndices.size() - 1) + 1,
-						closeIndices.get(closeIndices.size() - 1)));
+		StemLoopModelNode terminus = new StemLoopModelNode(String.valueOf(seq
+				.charAt(openIndices.get(openIndices.size() - 1)))
+				+ String.valueOf(seq.charAt(closeIndices.get(closeIndices
+						.size() - 1))), "", "", seq.substring(
+				openIndices.get(openIndices.size() - 1) + 1,
+				closeIndices.get(closeIndices.size() - 1)));
 		result.add(terminus);
 		return result;
 	}
