@@ -9,17 +9,17 @@ public class StemLoop {
 	private String id;
 	private boolean isEmpty;
 
-	private StemLoop(StemLoopModel m, String i) {
+	public StemLoop(StemLoopModel m, String i) {
 		model = m;
 		nodes = m.modelNodesToNodes(i);
 		this.id = i;
 		isEmpty = false;
 	}
-	
+
 	public StemLoop() {
 		isEmpty = true;
 	}
-	
+
 	public boolean isEmpty() {
 		return isEmpty;
 	}
