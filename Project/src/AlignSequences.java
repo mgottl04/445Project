@@ -2,31 +2,35 @@ import java.util.ArrayList;
 
 public class AlignSequences {
 
-	public double alignSequences(String seqA, String seqB) throws Exception {
-		
+	public double alignSequences(String structA, String seqA, String idA,
+			String structB, String seqB, String idB) throws Exception {
+
 		// Decompose into stem loops
-		ArrayList<StemLoop> loopsA = DotBracketParser.getStemLoops(seqA);
-		ArrayList<StemLoop> loopsB = DotBracketParser.getStemLoops(seqB);
-		
+		ArrayList<StemLoop> loopsA = DotBracketParser.getStemLoops(structA,
+				seqA, idA);
+		ArrayList<StemLoop> loopsB = DotBracketParser.getStemLoops(structA,
+				seqB, idB);
+
 		// Insert an empty StemLoop at the beginning of each
-		loopsA.add(0,new StemLoop());
-		loopsB.add(0,new StemLoop());
-		
+		loopsA.add(0, new StemLoop());
+		loopsB.add(0, new StemLoop());
+
 		// Create costs table
 		double[][] P = new double[loopsA.size()][loopsB.size()];
-			
+
 		// Fill costs table
 		for (int i = 0; i < loopsA.size(); i++) {
-			for (int j = 0; j < loopsB.size(); j++) {			
-				P[i][j] = StemLoopAligner.alignStemLoops(loopsA.get(i), loopsB.get(j));
+			for (int j = 0; j < loopsB.size(); j++) {
+				P[i][j] = StemLoopAligner.alignStemLoops(loopsA.get(i),
+						loopsB.get(j));
 			}
 		}
-		
+
 		// ** Apply classical string global alignment to the two sequences **
-		
+
 		// Create DP table
 		TableEntry[][] T = new TableEntry[loopsA.size()][loopsB.size()];
-		
+
 		// Fill the table
 		for (int i = 0; i < loopsA.size(); i++) {
 			for (int j = 0; j < loopsB.size(); j++) {
@@ -63,7 +67,7 @@ public class AlignSequences {
 				}
 			}
 		}
-		
+
 		// Get edit distance
 		double editDistance = T[loopsA.size()][loopsB.size()].score;
 
@@ -98,4 +102,3 @@ public class AlignSequences {
 		return editDistance;
 	}
 }
-

@@ -88,7 +88,7 @@ public class DotBracketParser {
 			result.add(new StemLoop(StemLoopModel.getModel(seqs.get(j),
 					structs.get(j)), id));
 		}
-		return new ArrayList<StemLoop>();
+		return (ArrayList<StemLoop>) result;
 	}
 
 	public static List<StemLoopModelNode> getNodes(String seq, String struct) {
