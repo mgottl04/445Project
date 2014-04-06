@@ -5,11 +5,13 @@ public class StemLoopAligner {
 	public static double alignStemLoops(StemLoop a, StemLoop b)
 			throws Exception {
 
-		// Get indexing pairs
-		ArrayList<IndexingPair> indexingPairsA = getIndexingPairs(a,
-				a.getRoot());
-		ArrayList<IndexingPair> indexingPairsB = getIndexingPairs(b,
-				b.getRoot());
+		// Get indexing pairs and terminal indexing pairs
+		ArrayList<IndexingPair> indexingPairsA = new ArrayList<IndexingPair>();
+		ArrayList<IndexingPair> termIndexingPairsA =  new ArrayList<IndexingPair>();
+		ArrayList<IndexingPair> indexingPairsB = new ArrayList<IndexingPair>();
+		ArrayList<IndexingPair> termIndexingPairsB = new ArrayList<IndexingPair>();
+		getIndexingPairs(a,a.getRoot(),indexingPairsA,termIndexingPairsA);
+		getIndexingPairs(b,b.getRoot(),indexingPairsB,termIndexingPairsB);
 
 		// Insert a NULL indexing pair at the beginning of each
 		indexingPairsA.add(0, null);
@@ -147,18 +149,18 @@ public class StemLoopAligner {
 			}
 		}
 
+		// Return results
 		return 0.0;
 	}
 
-	private static ArrayList<IndexingPair> getIndexingPairs(StemLoop tree,
-			StemLoopNode node) throws Exception {
+	private static void getIndexingPairs(StemLoop tree, StemLoopNode node,
+			ArrayList<IndexingPair> indexingPairs,
+			ArrayList<IndexingPair> termIndexingPairs) throws Exception {
 
 		if (tree.getType(node) != StemLoop.NodeType.INTERNAL) {
 			throw new Exception(
 					"Input to getIndexPairs must be an internal node");
 		}
-
-		ArrayList<IndexingPair> indexingPairs = new ArrayList<IndexingPair>();
 
 		// Add indexing pair for self (case 1)
 		indexingPairs.add(new IndexingPair(node, node));
@@ -171,6 +173,7 @@ public class StemLoopAligner {
 				for (int j = i + 1; j < terminalLeaves.length; j++) {
 					indexingPairs.add(new IndexingPair(terminalLeaves[i],
 							terminalLeaves[j]));
+					if ()
 				}
 			}
 		}
@@ -198,30 +201,15 @@ public class StemLoopAligner {
 			}
 
 			// Recursively add indexing pairs for internal node children
-			indexingPairs.addAll(getIndexingPairs(tree,
-					tree.getInternalChild(node)));
+			getIndexingPairs(tree, tree.getInternalChild(node), indexingPairs,
+					termIndexingPairs);
 		}
-
-		return indexingPairs;
 	}
 
-	private static double doCase1(double[][] table, StemLoop a, StemLoop b,
-			StemLoopNode x, StemLoopNode y, StemLoopNode u, StemLoopNode v) {
-
-		StemLoopNode predx = a.p(x);
-		StemLoopNode succy = a.s(y);
-		StemLoopNode predu = b.p(u);
-		StemLoopNode succv = b.s(v);
-
-		IndexingPair u_v = new IndexingPair(u, v);
-		IndexingPair px_y = new IndexingPair(predx, y);
-		return 0.0;
-	}
-	
-	private static double multiMin(double...ds) {
+	private static double multiMin(double... ds) {
 		double min = -Math.log(0);
 		for (double d : ds) {
-			min = Math.min(min,d);
+			min = Math.min(min, d);
 		}
 		return min;
 	}
