@@ -10,7 +10,10 @@ public class DotBracketParser {
 		ids = new ArrayList<String>();
 		ids.removeAll(ids);
 		ArrayList<Loop> loops = new ArrayList<Loop>();
-		getLoops(loops, struct, 0);
+		List<Loop> outerLoops = getLoops(loops, struct, 0, struct.length() - 1);
+		for (Loop loop : outerLoops) {
+			loops.add(loop);
+		}
 
 		List<String> seqs = new ArrayList<String>();
 		List<String> structs = new ArrayList<String>();
@@ -25,10 +28,10 @@ public class DotBracketParser {
 		for (int j = 0; j < seqSize; j++) {
 			int k = 0;
 			for (Loop indexs : loops) {
-				if ( j >= 306 && j <= 323) {
+				if (j >= 306 && j <= 323) {
 					System.out.println("somethingsomething");
 				}
-				
+
 				if (j >= indexs.indexA && j <= indexs.indexB) {
 					String newSeq = seqs.get(k).concat(
 							String.valueOf(seqArray[j]));
@@ -101,42 +104,36 @@ public class DotBracketParser {
 		return (ArrayList<StemLoop>) result;
 	}
 
-	private static void getLoops(ArrayList<Loop> loops, String struct,
-			int offset) {
+	private static List<Loop> getLoops(ArrayList<Loop> loops, String struct,
+			int start, int end) {
 		Stack<Integer> openStack = new Stack<Integer>();
-		char prevC = 0;
-		boolean inLoop = false;
-		boolean isMulti = false;
-		int lastPopped = -1;
-		for (int i = offset; i < struct.length(); i++) {
+		List<Loop> outerLoopers = new ArrayList<Loop>();
+		int lastPopped = 0;
+		for (int i = start; i <= end; i++) {
 			char c = struct.charAt(i);
 			if (c == '.') {
 				continue;
-			}
-			if (c == '(') {
-				inLoop = true;
-				if (prevC == ')') {
-					isMulti = true;
-					getLoops(loops, struct, i);
-				}
+			
+			} else if (c == '(') {
 				openStack.push(i);
-			}
-			if (!openStack.isEmpty() && c == ')') {
+
+			} else {
 				lastPopped = openStack.pop();
 			}
 
-			if (inLoop && openStack.isEmpty()) {
-				Loop currLoop = new Loop(lastPopped, i, isMulti);
-				if (!ids.contains(String.valueOf(lastPopped) + "%"
-						+ String.valueOf(i))) {
-					ids.add(String.valueOf(lastPopped) + "%"
-							+ String.valueOf(i));
-					loops.add(currLoop);
+			if (openStack.isEmpty()) {
+				List<Loop> nested = getLoops(loops, struct, lastPopped + 1,
+						i - 1);
+				boolean isMulti = nested.size() > 1;
+				if (isMulti) {
+					for (Loop l : nested) {
+						loops.add(l);
+					}
 				}
-				inLoop = false;
+				outerLoopers.add(new Loop(lastPopped, i, isMulti));
 			}
-			prevC = c;
 		}
+		return outerLoopers;
 	}
 
 	public static List<StemLoopModelNode> getNodes(String seq, String struct) {
