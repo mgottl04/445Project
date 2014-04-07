@@ -25,7 +25,8 @@ public class StemLoop {
 	}
 
 	public StemLoopNode getRoot() {
-
+		if (isEmpty)
+			return null;
 		for (StemLoopNode n : nodes)
 			if (n.getType() == StemLoopNode.NodeType.INTERNAL)
 				return n;
