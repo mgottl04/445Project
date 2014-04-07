@@ -97,7 +97,7 @@ public class DotBracketParser {
 				seqs.remove(i + 1);
 			}
 		}
-		for (int j = 0; j < seqs.size() - 1; j++) {
+		for (int j = 0; j < seqs.size(); j++) {
 			result.add(new StemLoop(StemLoopModel.getModel(seqs.get(j),
 					structs.get(j)), id));
 		}
@@ -113,7 +113,7 @@ public class DotBracketParser {
 			char c = struct.charAt(i);
 			if (c == '.') {
 				continue;
-			
+
 			} else if (c == '(') {
 				openStack.push(i);
 
