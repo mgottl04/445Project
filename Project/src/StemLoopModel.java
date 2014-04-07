@@ -60,7 +60,10 @@ public class StemLoopModel {
 			}
 
 		}
-
-		return (StemLoopNode[]) result.toArray();
+		StemLoopNode[] resultArray = new StemLoopNode[result.size()];
+		for (i = 0; i < result.size(); i++) {
+			resultArray[i] = result.get(i);
+		}
+		return resultArray;
 	}
 }

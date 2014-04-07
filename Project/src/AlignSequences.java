@@ -8,7 +8,7 @@ public class AlignSequences {
 		// Decompose into stem loops
 		ArrayList<StemLoop> loopsA = DotBracketParser.getStemLoops(structA,
 				seqA, idA);
-		ArrayList<StemLoop> loopsB = DotBracketParser.getStemLoops(structA,
+		ArrayList<StemLoop> loopsB = DotBracketParser.getStemLoops(structB,
 				seqB, idB);
 
 		// Insert an empty StemLoop at the beginning of each
