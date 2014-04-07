@@ -25,7 +25,6 @@ public class StemLoopModel {
 
 	public String getTerminalLeaves() {
 		return nodes.get(nodes.size() - 1).getTerminalChildren();
-		// TODO Auto-generated method stub
 
 	}
 

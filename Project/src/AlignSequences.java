@@ -11,6 +11,10 @@ public class AlignSequences {
 		ArrayList<StemLoop> loopsB = DotBracketParser.getStemLoops(structB,
 				seqB, idB);
 
+		// Checking number of stem loops
+		System.out.println("loopA size: " + loopsA.size());
+		System.out.println("loopB size: " + loopsB.size());
+		
 		// Insert an empty StemLoop at the beginning of each
 		loopsA.add(0, new StemLoop());
 		loopsB.add(0, new StemLoop());

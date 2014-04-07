@@ -62,5 +62,31 @@ public class StemLoopTest {
 		System.out.println(j.substring(0, 1));
 		System.out.println(j.substring(1, 2));
 	}
+	
+	@Test
+	public void testMakeTree()	{
+		String seq1 = "ACAACCGU";
+		String str1 = "((....))";
+		StemLoopModel tree = StemLoopModel.getModel(seq1, str1);
+		
+		System.out.println("StemLoopModel: ");
+		for(int i =0; i<tree.getNodes().size(); i++){
+			System.out.println("Node no: "+ i);
+			System.out.println("BoundPair: "+ tree.getNodes().get(i).getBoundPair());
+			System.out.println("LeftChildren: "+ tree.getNodes().get(i).getLeftChildren());
+			System.out.println("RightChildren: "+ tree.getNodes().get(i).getRightChildren());
+			System.out.println("Terminal: "+ tree.getNodes().get(i).getTerminalChildren());
+			System.out.println("");
+		}
+		
+		StemLoopNode[] tStemLoopNode = tree.modelNodesToNodes("0");
+		for(int i=0; i<tStemLoopNode.length;i++){
+			System.out.println("Node no: "+ i);
+			System.out.println("Node Type: "+ tStemLoopNode[i].getType());
+			System.out.println("Base: "+ tStemLoopNode[i].getBase());
+			System.out.println("");
+		}
+		
+	}
 
 }
