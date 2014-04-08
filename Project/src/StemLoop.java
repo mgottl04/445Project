@@ -145,11 +145,21 @@ public class StemLoop {
 			return null;
 		}
 		StemLoopNode potentialPredecessor = nodes[i - 1];
-		if (potentialPredecessor.getType() == node.getType())
-			return potentialPredecessor;
-
-		return nodes[parentIndex];
-
+		
+		if  (node.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
+			if (potentialPredecessor.getType() == StemLoopNode.NodeType.INTERNAL)
+				return nodes[parentIndex];
+		}
+		if (node.getType() == StemLoopNode.NodeType.INTERNAL) {
+			int closestLeft = parentIndex;
+			for (int j = parentIndex; j < i; j++){
+				if (nodes[j].getType() == StemLoopNode.NodeType.LEFT_LEAF){
+					closestLeft = j;
+				}
+			}
+			return nodes[closestLeft];
+		}
+		return potentialPredecessor;
 	}
 
 	// get successor (return NULL if undefined)
@@ -173,12 +183,22 @@ public class StemLoop {
 		if (i == nodes.length - 1)
 			return nodes[parentIndex];
 		StemLoopNode potentialSuccesor = nodes[i + 1];
-		if (node.getType() != StemLoopNode.NodeType.INTERNAL
-				&& potentialSuccesor.getType() != StemLoopNode.NodeType.INTERNAL) {
-			if (potentialSuccesor.getType() == node.getType())
-				return potentialSuccesor;
+		
+		if  (node.getType() == StemLoopNode.NodeType.RIGHT_LEAF) {
+			if (potentialSuccesor.getType() == StemLoopNode.NodeType.INTERNAL)
+				return nodes[parentIndex];
 		}
-		return nodes[parentIndex];
+		if (node.getType() == StemLoopNode.NodeType.INTERNAL) {
+			int closestRight = parentIndex;
+			for (int j = parentIndex; j < i; j++){
+				if (nodes[j].getType() == StemLoopNode.NodeType.RIGHT_LEAF){
+					closestRight = j;
+					break;
+				}
+			}
+			return nodes[closestRight];
+		}
+		return potentialSuccesor;
 	}
 
 	// TODO What is this?

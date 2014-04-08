@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
@@ -7,9 +8,12 @@ public class DotBracketParser {
 
 	public static ArrayList<StemLoop> getStemLoops(String struct, String seq,
 			String id) {
+		
+		
 		ids = new ArrayList<String>();
 		ids.removeAll(ids);
 		ArrayList<Loop> loops = new ArrayList<Loop>();
+		//decompose multiloop into individual stem loop
 		List<Loop> outerLoops = getLoops(loops, struct, 0, struct.length() - 1);
 		for (Loop loop : outerLoops) {
 			loops.add(loop);
@@ -28,10 +32,6 @@ public class DotBracketParser {
 		for (int j = 0; j < seqSize; j++) {
 			int k = 0;
 			for (Loop indexs : loops) {
-				if (j >= 306 && j <= 323) {
-					System.out.println("somethingsomething");
-				}
-
 				if (j >= indexs.indexA && j <= indexs.indexB) {
 					String newSeq = seqs.get(k).concat(
 							String.valueOf(seqArray[j]));
@@ -106,6 +106,7 @@ public class DotBracketParser {
 
 	private static List<Loop> getLoops(ArrayList<Loop> loops, String struct,
 			int start, int end) {
+		//use stack to find when an outer loop has been resolved
 		Stack<Integer> openStack = new Stack<Integer>();
 		List<Loop> outerLoopers = new ArrayList<Loop>();
 		int lastPopped = 0;
@@ -118,7 +119,13 @@ public class DotBracketParser {
 				openStack.push(i);
 
 			} else {
+				try{
 				lastPopped = openStack.pop();
+				} catch (EmptyStackException e){
+					int jj = 5;
+					int bb = 6;
+					jj +=bb;
+				}
 			}
 
 			if (openStack.isEmpty()) {
