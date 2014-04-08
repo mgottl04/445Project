@@ -1,8 +1,14 @@
 import java.util.ArrayList;
 
-public class AlignSequences {
+public class AlignLoops {
 
-	public double alignSequences(String structA, String seqA, String idA,
+	private String alignment;
+	
+	public AlignLoops() {
+		alignment = "";
+	}
+	
+	public double alignLoops(String structA, String seqA, String idA,
 			String structB, String seqB, String idB) throws Exception {
 
 		// Decompose into stem loops
@@ -51,8 +57,8 @@ public class AlignSequences {
 					double i_to_gap_score = T[i - 1][j].score + P[i][0];
 					double j_to_gap_score = T[i][j - 1].score + P[0][j];
 
-					if (paired_score >= i_to_gap_score) {
-						if (paired_score >= j_to_gap_score) {
+					if (paired_score <= i_to_gap_score) {
+						if (paired_score <= j_to_gap_score) {
 							T[i][j] = new TableEntry(paired_score,
 									TableEntry.Pointer.DIAGONAL);
 						} else {
@@ -60,7 +66,7 @@ public class AlignSequences {
 									TableEntry.Pointer.LEFT);
 						}
 					} else {
-						if (i_to_gap_score >= j_to_gap_score) {
+						if (i_to_gap_score <= j_to_gap_score) {
 							T[i][j] = new TableEntry(i_to_gap_score,
 									TableEntry.Pointer.UP);
 						} else {
@@ -73,14 +79,14 @@ public class AlignSequences {
 		}
 
 		// Get edit distance
-		double editDistance = T[loopsA.size()][loopsB.size()].score;
+		double editDistance = T[loopsA.size()-1][loopsB.size()-1].score;
 
 		// Recover alignment
 		String seqA_loops = "";
 		String seqB_loops = "";
-
-		int current_row = loopsA.size();
-		int current_col = loopsB.size();
+		
+		int current_row = loopsA.size() - 1;
+		int current_col = loopsB.size() - 1;
 		TableEntry.Pointer pointer = T[current_row][current_col].pointer;
 		while (pointer != TableEntry.Pointer.NULL) {
 			if (pointer == TableEntry.Pointer.DIAGONAL) {
@@ -102,7 +108,12 @@ public class AlignSequences {
 
 		seqA_loops = new StringBuilder(seqA_loops).reverse().toString();
 		seqB_loops = new StringBuilder(seqB_loops).reverse().toString();
+		alignment = seqA_loops + "\n" + seqB_loops;
 
 		return editDistance;
+	}
+	
+	public String getAlignment() {
+		return alignment;
 	}
 }

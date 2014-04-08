@@ -7,8 +7,8 @@ UAUAACCGU
 .((....))
 
 >deletion_base1
-UAUAACCGU
-.((....))
+AUUAACCGU
+(.(....))
 
 >deletion_base2
 AUAACCGU

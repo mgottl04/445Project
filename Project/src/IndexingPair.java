@@ -17,8 +17,10 @@ public class IndexingPair {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof IndexingPair)
-			return (nodeA.equals(((IndexingPair) obj).nodeA) && nodeB.equals(((IndexingPair) obj).nodeB));
+		if (obj instanceof IndexingPair) {
+			if (nodeA != null && nodeB != null)
+				return (nodeA.equals(((IndexingPair) obj).nodeA) && nodeB.equals(((IndexingPair) obj).nodeB));
+		}		
 		return false;
 	}
 }

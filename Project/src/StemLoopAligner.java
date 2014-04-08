@@ -33,8 +33,9 @@ public class StemLoopAligner {
 			IndexingPair currentPair = indexingPairsB.get(j);
 			double currentPairCost = 0;
 			//System.out.println("b");
-			for (StemLoopNode node : b.subtree(currentPair.nodeA,
-					currentPair.nodeB).getAllNodes()) {
+			StemLoop sub = b.subtree(currentPair.nodeA,
+					currentPair.nodeB);
+			for (StemLoopNode node : sub.getAllNodes()) {
 				currentPairCost += EditCosts.insertCost(node);
 			}
 			D[0][j] = currentPairCost;
@@ -43,6 +44,11 @@ public class StemLoopAligner {
 		// Handle case where first stem loop is empty
 		if (a.isEmpty()) {
 			return D[0][indexingPairsB.size() - 1];
+		}
+		
+		// Handle case where second stem loop is empty
+		if (b.isEmpty()) {
+			return D[indexingPairsA.size() - 1][0];
 		}
 
 		// Fill out the table
@@ -97,10 +103,6 @@ public class StemLoopAligner {
 				IndexingPair pu_v = new IndexingPair(b.p(u), v);
 				IndexingPair u_sv = new IndexingPair(u, b.s(v));
 				IndexingPair pu_sv = new IndexingPair(b.p(u), b.s(v));
-				/*int u_v_index = j;
-				int pu_v_index = indexingPairsB.indexOf(pu_v);
-				int u_sv_index = indexingPairsB.indexOf(u_sv);
-				int pu_sv_index = indexingPairsB.indexOf(pu_sv);*/
 				
 				int u_v_index = j;
 				int pu_v_index = -1;
@@ -128,82 +130,138 @@ public class StemLoopAligner {
 
 				// Compute D[i][j] depending on type
 
+				// CASE 1
 				if (bothAInternal && bothBInternal) {
 					double valA = D[px_sy_index][pu_sv_index]
 							+ EditCosts.relableCost(x, u);
 					double valB = D[px_sy_index][u_v_index]
 							+ EditCosts.deleteCost(x);
 					double valC = D[x_y_index][pu_sv_index]
-							+ EditCosts.deleteCost(u);
+							+ EditCosts.insertCost(u);
 
 					D[i][j] = multiMin(valA, valB, valC);
 				}
 
+				// CASE 3
 				else if (bothAInternal) {
-					double valA = D[px_sy_index][u_v_index];
-					valA = valA < 0 ? valA = -Math.log(0) : valA
-							+ EditCosts.deleteCost(x);
-					double valB = D[x_y_index][pu_v_index];
-					valB = valB < 0 ? valB = -Math.log(0) : valB
-							+ EditCosts.insertCost(u);
-					double valC = D[x_y_index][u_sv_index];
-					valC = valC < 0 ? valC = -Math.log(0) : valC
-							+ EditCosts.insertCost(v);
-					double valD = D[px_sy_index][pu_v_index];
-					valD = valD < 0 ? valD = -Math.log(0) : valD
-							+ EditCosts.alteringCost(x, u);
-					double valE = D[px_sy_index][u_sv_index];
-					valE = valE < 0 ? valE = -Math.log(0) : valE
-							+ EditCosts.alteringCost(x, v);
-					double valF = D[px_sy_index][pu_sv_index];
-					valF = valF < 0 ? valF = -Math.log(0) : valF
-							+ EditCosts.arcBreakingCost(x, u, v);
+					double valA;
+					if (px_sy_index < 0 || u_v_index < 0)
+						valA = -Math.log(0);
+					else
+						valA = D[px_sy_index][u_v_index] + EditCosts.deleteCost(x);
+					
+					double valB;
+					if (x_y_index < 0 || pu_v_index < 0)
+						valB = -Math.log(0);
+					else
+						valB = D[x_y_index][pu_v_index] + EditCosts.insertCost(u);;
+					
+					double valC;
+					if (x_y_index < 0 || u_sv_index < 0)
+						valC = -Math.log(0);
+					else
+						valC = D[x_y_index][u_sv_index] + EditCosts.insertCost(v);
+					
+					double valD;
+					if (px_sy_index < 0 || pu_v_index < 0)
+						valD = -Math.log(0);
+					else
+						valD = D[px_sy_index][pu_v_index] + EditCosts.alteringCost(x, u);
+					
+					double valE;
+					if (px_sy_index < 0 || u_sv_index < 0)
+						valE = -Math.log(0);
+					else
+						valE = D[px_sy_index][u_sv_index] + EditCosts.alteringCost(x, v);
+					
+					double valF;
+					if (px_sy_index < 0 || pu_sv_index < 0)
+						valF = -Math.log(0);
+					else
+						valF = D[px_sy_index][pu_sv_index] + EditCosts.arcBreakingCost(x, u, v);
 
 					D[i][j] = multiMin(valA, valB, valC, valD, valE, valF);
 				}
 
+				// CASE 4                                             
 				else if (bothBInternal) {
-					double valA = D[x_y_index][pu_sv_index];
-					valA = valA < 0 ? valA = -Math.log(0) : valA
-							+ EditCosts.insertCost(u);
-					double valB = D[px_y_index][u_v_index];
-					valB = valB < 0 ? valB = -Math.log(0) : valB
-							+ EditCosts.deleteCost(x);
-					double valC = D[x_sy_index][u_v_index];
-					valC = valC < 0 ? valC = -Math.log(0) : valC
-							+ EditCosts.deleteCost(y);
-					double valD = D[px_y_index][pu_sv_index];
-					valD = valD < 0 ? valD = -Math.log(0) : valD
-							+ EditCosts.completionCost(x, u);
-					double valE = D[x_sy_index][pu_sv_index];
-					valE = valE < 0 ? valE = -Math.log(0) : valE
-							+ EditCosts.completionCost(y, u);
-					double valF = D[px_sy_index][pu_sv_index];
-					valF = valF < 0 ? valF = -Math.log(0) : valF
-							+ EditCosts.arcCreationCost(x, y, u);
+					
+					double valA;
+					if ( x_y_index < 0 || pu_sv_index < 0)
+						 valA = -Math.log(0);
+					else
+						 valA = D[x_y_index][pu_sv_index] + EditCosts.insertCost(u);
+					
+					double valB;
+					if ( px_y_index < 0 || u_v_index < 0)
+						valB = -Math.log(0);
+					else
+						valB = D[px_y_index][u_v_index] + EditCosts.deleteCost(x);
+					
+					double valC;
+					if ( x_sy_index < 0 || u_v_index < 0)
+						valC = -Math.log(0);
+					else
+						valC = D[x_sy_index][u_v_index] + EditCosts.deleteCost(y);
+					
+					double valD;
+					if ( px_y_index < 0 || pu_sv_index < 0)
+						valD = -Math.log(0);
+					else
+						valD = D[px_y_index][pu_sv_index] + EditCosts.completionCost(x, u);
+					
+					double valE;
+					if ( x_sy_index < 0 || pu_sv_index < 0)
+						valE = -Math.log(0);
+					else
+						valE = D[x_sy_index][pu_sv_index] + EditCosts.completionCost(y, u);
+					
+					double valF;
+					if ( px_sy_index < 0 ||  pu_sv_index < 0)
+						valF = -Math.log(0);
+					else
+						valF = D[px_sy_index][pu_sv_index] + EditCosts.arcCreationCost(x, y, u);
 
 					D[i][j] = multiMin(valA, valB, valC, valD, valE, valF);
 				}
 
+				// CASE 2
 				else {
-					double valA = D[px_y_index][u_v_index];
-					valA = valA < 0 ? valA = -Math.log(0) : valA
-							+ EditCosts.deleteCost(x);
-					double valB = D[x_sy_index][u_v_index];
-					valB = valB < 0 ? valB = -Math.log(0) : valB
-							+ EditCosts.deleteCost(y);
-					double valC = D[x_y_index][pu_v_index];
-					valC = valC < 0 ? valC = -Math.log(0) : valC
-							+ EditCosts.insertCost(u);
-					double valD = D[x_y_index][u_sv_index];
-					valD = valD < 0 ? valD = -Math.log(0) : valD
-							+ EditCosts.insertCost(v);
-					double valE = D[px_y_index][u_v_index];
-					valE = valE < 0 ? valE = -Math.log(0) : valE
-							+ EditCosts.relableCost(x, u);
-					double valF = D[x_sy_index][u_sv_index];
-					valF = valF < 0 ? valF = -Math.log(0) : valF
-							+ EditCosts.relableCost(y, v);
+					double valA;
+   					if ( px_y_index < 0 ||  u_v_index < 0)
+						valA = -Math.log(0);
+					else
+						valA = D[px_y_index][u_v_index] + EditCosts.deleteCost(x);
+					
+					double valB;
+					if (x_sy_index < 0 || u_v_index  < 0)
+						valB = -Math.log(0);
+					else
+						valB = D[x_sy_index][u_v_index] + EditCosts.deleteCost(y);
+					
+					double valC;
+					if ( x_y_index < 0 || pu_v_index < 0)
+						valC = -Math.log(0);
+					else
+						valC = D[x_y_index][pu_v_index] + EditCosts.insertCost(u);
+					
+					double valD;
+					if (x_y_index < 0 || u_sv_index < 0)
+						valD = -Math.log(0);
+					else
+						valD = D[x_y_index][u_sv_index] + EditCosts.insertCost(v);
+					
+					double valE;
+					if ( px_y_index < 0 || pu_v_index < 0)
+						valE = -Math.log(0);
+					else
+						valE = D[px_y_index][pu_v_index] + EditCosts.relableCost(x, u) ;
+					
+					double valF;
+					if (x_sy_index < 0 || u_sv_index < 0)
+						valF = -Math.log(0);
+					else
+						valF = D[x_sy_index][u_sv_index] + EditCosts.relableCost(y, v);
 
 					D[i][j] = multiMin(valA, valB, valC, valD, valE, valF);
 				}
@@ -215,12 +273,12 @@ public class StemLoopAligner {
 		for (IndexingPair pairA : termIndexingPairsA) {
 			int indexA = indexingPairsA.indexOf(pairA);
 			for (IndexingPair pairB : termIndexingPairsB) {
-				int indexB = indexingPairsA.indexOf(pairB);
+				int indexB = indexingPairsB.indexOf(pairB);
 				bestScore = Math.min(bestScore,D[indexA][indexB]);
 			}
 		}
 		
-		return bestScore;
+ 		return bestScore;
 	}
 
 	private static void getIndexingPairs(StemLoop tree, StemLoopNode node,
@@ -230,7 +288,7 @@ public class StemLoopAligner {
 		if (tree.isEmpty()) {
 			return;
 		}
-		
+
 		if (tree.getType(node) != StemLoopNode.NodeType.INTERNAL) {
 			throw new Exception(
 					"Input to getIndexPairs must be an internal node");
@@ -242,14 +300,18 @@ public class StemLoopAligner {
 		if (tree.isTerminal(node)) {
 			StemLoopNode[] terminalLeaves = tree.getTerminalLeaves(node);
 
+			// FIXING BUG IN PAPER - add indexing pairs for node + flanking leaves
+			indexingPairs.add(new IndexingPair(terminalLeaves[0],node));
+			indexingPairs.add(new IndexingPair(node,terminalLeaves[terminalLeaves.length - 1]));
+			
 			// Add indexing pairs for terminal leaves (case 5)
 			for (int i = 0; i < terminalLeaves.length; i++) {
-				for (int j = i + 1; j < terminalLeaves.length; j++) {
+				for (int j = terminalLeaves.length - 1; j > i; j--) {
 					indexingPairs.add(new IndexingPair(terminalLeaves[i],
 							terminalLeaves[j]));
 					if (j == i + 1) {
-						termIndexingPairs.add(new IndexingPair(terminalLeaves[i],
-								terminalLeaves[j]));
+						termIndexingPairs.add(new IndexingPair(
+								terminalLeaves[i], terminalLeaves[j]));
 					}
 				}
 			}

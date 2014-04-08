@@ -11,14 +11,15 @@ public class Main {
 		String seqB = "gaggaaagucCGGGCUCCUUCGGACAGGGCGCCAGGUAACGCCUGGGGGGCGUGAGCCCACGGAAAGUGCCACAGAAAAUAUACCGCCAGCUUCGGCUGGUAAGGGUGAAAUGGUGCGGUAAGAGCGCACCGCGCGACUGGCAACGGCUUGCGGCACGGUAAACCCCGCCCGGAGCAAGACCAAAUAGGGGAGCAUGUCCGUCGUGUCCGAACGGGCUCCCGGGUAGGUUGCUUGAGGUGGCCGGUGACGGCUAUCCCAGAUGAAUGGUUGUCGAUGacagaacccggcuuac";
 		String structB = "..............((((........((((((((((.....)))))(((((....)))).)((...(((((............((((((((....))))))..)).......((((((.......))))))(((((((((....))).))))).)..)))..)))))))))))))...((((......((((((....((((.........)))))))))).....))))......((((((((....)))))))).....................................";
 
-		String seqC = "UAUAACCGU";
-		String structC = ".((....))";
-		String seqD = "UACAACCGU";
-		
+		String seqC = "AUUAACCGU";
+		String structC = "(.(....))";
+		String seqD = "AUAACCGU";
+		String structD = "((....))";
 
-		AlignSequences align = new AlignSequences();
-		align.alignSequences(structC, seqC, "1", structC, seqD, "2");
-
+		AlignLoops align = new AlignLoops();
+		double editDistance = align.alignLoops(structC, seqC, "1", structD, seqD, "2");
+		System.out.println(editDistance);
+		System.out.println(align.getAlignment());
 	}
 
 }
