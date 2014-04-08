@@ -6,6 +6,14 @@ public class IndexingPair {
 		this.nodeA = nodeA;
 		this.nodeB = nodeB;
 	}
+	
+	public StemLoopNode getNodeA(){
+		return this.nodeA;
+	}
+	
+	public StemLoopNode getNodeB(){
+		return this.nodeB;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

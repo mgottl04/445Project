@@ -13,9 +13,11 @@ public class Main {
 
 		String seqC = "UAUAACCGU";
 		String structC = ".((....))";
+		String seqD = "UACAACCGU";
+		
 
 		AlignSequences align = new AlignSequences();
-		align.alignSequences(structC, seqC, "1", structB, seqB, "2");
+		align.alignSequences(structC, seqC, "1", structC, seqD, "2");
 
 	}
 

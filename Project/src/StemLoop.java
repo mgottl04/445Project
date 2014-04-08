@@ -2,6 +2,8 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Node;
+
 public class StemLoop {
 
 	StemLoopNode[] nodes;
@@ -198,6 +200,7 @@ public class StemLoop {
 		List<StemLoopNode> result = new ArrayList<StemLoopNode>();
 		StemLoopNode.NodeType typeA = nodeA.getType();
 		StemLoopNode.NodeType typeB = nodeB.getType();
+		
 		// case 1 : nodeB == nodeA
 		if (nodeA.equals(nodeB)) {
 			for (StemLoopNode n : nodes) {
@@ -289,67 +292,67 @@ public class StemLoop {
 						bSeen = true;
 				}
 			}
-		}
+		
 		// case4 : nodeA & nodeB both same type of leaves to same parent
-		if (getParent(nodeA).equals(getParent(nodeB))
+			else if (getParent(nodeA).equals(getParent(nodeB))
 				&& nodeA.getType() == nodeB.getType()) {
-			boolean aSeen = false;
-			boolean bSeen = false;
+			boolean aSeen1 = false;
+			boolean bSeen1 = false;
 
 			for (StemLoopNode n : nodes) {
-				if ((aSeen & !bSeen) || (!aSeen && bSeen)) {
+				if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1)) {
 					if (n.equals(nodeB))
-						bSeen = true;
+						bSeen1 = true;
 					if (n.equals(nodeA))
-						aSeen = true;
-					if ((aSeen & !bSeen) || (!aSeen && bSeen))
+						aSeen1 = true;
+					if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1))
 						continue;
 				}
 				result.add(n);
 				if (n.equals(nodeB))
-					bSeen = true;
+					bSeen1 = true;
 				if (n.equals(nodeA))
-					aSeen = true;
+					aSeen1 = true;
 
 			}
 		}
 		// case5 : nodeA & nodeB are leaves to same parent, but different types
 		// of nodes
 		else {
-			boolean aSeen = false;
-			boolean bSeen = false;
+			boolean aSeen2 = false;
+			boolean bSeen2 = false;
 			if (nodeA.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
 				for (StemLoopNode n : nodes) {
 					if (n.equals(nodeB))
-						bSeen = true;
-					if (bSeen) {
+						bSeen2 = true;
+					if (bSeen2) {
 						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
 							break;
 					}
-					if (aSeen & !bSeen)
+					if (aSeen2 & !bSeen2)
 						continue;
 
 					if (n.equals(nodeA))
-						aSeen = true;
+						aSeen2 = true;
 				}
 			} else {
 				for (StemLoopNode n : nodes) {
 					if (n.equals(nodeA))
-						aSeen = true;
-					if (aSeen) {
+						aSeen2 = true;
+					if (aSeen2) {
 						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
 							break;
 					}
-					if (bSeen & !aSeen)
+					if (bSeen2 & !aSeen2)
 						continue;
 
 					if (n.equals(nodeB))
-						bSeen = true;
+						bSeen2 = true;
 				}
 			}
 		}
-
-		return new StemLoop(model, (StemLoopNode[]) result.toArray(), id
+		}
+		return new StemLoop(model, castArray(result), id
 				+ "sub" + nodeA.getId() + nodeB.getId());
 	}
 

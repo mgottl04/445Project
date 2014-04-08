@@ -32,6 +32,7 @@ public class StemLoopAligner {
 		for (int j = 1; j < indexingPairsB.size(); j++) {
 			IndexingPair currentPair = indexingPairsB.get(j);
 			double currentPairCost = 0;
+			//System.out.println("b");
 			for (StemLoopNode node : b.subtree(currentPair.nodeA,
 					currentPair.nodeB).getAllNodes()) {
 				currentPairCost += EditCosts.insertCost(node);
@@ -51,15 +52,33 @@ public class StemLoopAligner {
 			IndexingPair x_y = indexingPairsA.get(i);
 			StemLoopNode x = x_y.nodeA;
 			StemLoopNode y = x_y.nodeB;
-
+	
 			// Set up indexing pairs for look-up
 			IndexingPair px_y = new IndexingPair(a.p(x), y);
 			IndexingPair x_sy = new IndexingPair(x, a.s(y));
 			IndexingPair px_sy = new IndexingPair(a.p(x), a.s(y));
+			
 			int x_y_index = i;
-			int px_y_index = indexingPairsA.indexOf(px_y);
-			int x_sy_index = indexingPairsA.indexOf(x_sy);
-			int px_sy_index = indexingPairsA.indexOf(px_sy);
+			int px_y_index = -1;
+			int x_sy_index = -1;
+			int px_sy_index = -1;
+			
+			// handle index at root
+			if(a.p(x) == null && a.s(y) == null) {
+				px_y_index = 0;
+				x_sy_index = 0;
+				px_sy_index = 0;
+			}
+			
+			else {
+				px_y_index = indexingPairsA.indexOf(px_y);
+				x_sy_index = indexingPairsA.indexOf(x_sy);
+				px_sy_index = indexingPairsA.indexOf(px_sy);
+			}
+							
+			//int px_y_index = indexingPairsA.indexOf(px_y);
+			//int x_sy_index = indexingPairsA.indexOf(x_sy);
+			//int px_sy_index = indexingPairsA.indexOf(px_sy);
 
 			// Determine type
 			StemLoopNode.NodeType typex = a.getType(x);
@@ -78,11 +97,29 @@ public class StemLoopAligner {
 				IndexingPair pu_v = new IndexingPair(b.p(u), v);
 				IndexingPair u_sv = new IndexingPair(u, b.s(v));
 				IndexingPair pu_sv = new IndexingPair(b.p(u), b.s(v));
-				int u_v_index = j;
+				/*int u_v_index = j;
 				int pu_v_index = indexingPairsB.indexOf(pu_v);
 				int u_sv_index = indexingPairsB.indexOf(u_sv);
-				int pu_sv_index = indexingPairsB.indexOf(pu_sv);
-
+				int pu_sv_index = indexingPairsB.indexOf(pu_sv);*/
+				
+				int u_v_index = j;
+				int pu_v_index = -1;
+				int u_sv_index = -1;
+				int pu_sv_index = -1;
+				
+				// handle index at root
+				if(a.p(u) == null && a.s(v) == null) {
+					pu_v_index = 0;
+					u_sv_index = 0;
+					pu_sv_index = 0;
+				}
+				
+				else {
+					pu_v_index = indexingPairsA.indexOf(pu_v);
+					u_sv_index = indexingPairsA.indexOf(u_sv);
+					pu_sv_index = indexingPairsA.indexOf(pu_sv);
+				}
+				
 				// Determine type
 				StemLoopNode.NodeType typeu = b.getType(u);
 				StemLoopNode.NodeType typev = b.getType(v);
