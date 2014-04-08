@@ -54,8 +54,17 @@ public class StemLoop {
 			}
 
 		}
-		return (StemLoopNode[]) result.toArray();
+		
+		// Translate the arraylist to StemLoopNode[]
+		StemLoopNode[] temp = new StemLoopNode[result.size()];
+		int i = 0;
+		for(StemLoopNode n: result){
+			temp[i++] = (StemLoopNode) n;
+		}
+		
+		//return (StemLoopNode[]) result.toArray();
 
+		return temp;
 	}
 
 	// get right leaves (order matters) (throw exception if not internal node)
@@ -74,7 +83,16 @@ public class StemLoop {
 			}
 
 		}
-		return (StemLoopNode[]) result.toArray();
+		
+		// Translate the arraylist to StemLoopNode[]
+		StemLoopNode[] temp = new StemLoopNode[result.size()];
+		int i = 0;
+		for(StemLoopNode n: result){
+			temp[i++] = (StemLoopNode) n;
+		}
+		
+		//StemLoopNode[] temp = (StemLoopNode[]) result.toArray();
+		return temp;
 	}
 
 	// get terminal leaves (order matters) (throw exception if not internal
