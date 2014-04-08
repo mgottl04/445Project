@@ -108,16 +108,16 @@ public class StemLoopAligner {
 				int pu_sv_index = -1;
 				
 				// handle index at root
-				if(a.p(u) == null && a.s(v) == null) {
+				if(b.p(u) == null && b.s(v) == null) {
 					pu_v_index = 0;
 					u_sv_index = 0;
 					pu_sv_index = 0;
 				}
 				
 				else {
-					pu_v_index = indexingPairsA.indexOf(pu_v);
-					u_sv_index = indexingPairsA.indexOf(u_sv);
-					pu_sv_index = indexingPairsA.indexOf(pu_sv);
+					pu_v_index = indexingPairsB.indexOf(pu_v);
+					u_sv_index = indexingPairsB.indexOf(u_sv);
+					pu_sv_index = indexingPairsB.indexOf(pu_sv);
 				}
 				
 				// Determine type
