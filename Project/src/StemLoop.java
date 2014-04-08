@@ -56,9 +56,9 @@ public class StemLoop {
 			}
 
 		}
-		//return (StemLoopNode[]) result.toArray();
+		// return (StemLoopNode[]) result.toArray();
 		return castArray(result);
-		
+
 	}
 
 	// get right leaves (order matters) (throw exception if not internal node)
@@ -77,8 +77,8 @@ public class StemLoop {
 			}
 
 		}
-		
-		//return (StemLoopNode[]) result.toArray();
+
+		// return (StemLoopNode[]) result.toArray();
 		return castArray(result);
 	}
 
@@ -99,7 +99,7 @@ public class StemLoop {
 			}
 
 		}
-		//return (StemLoopNode[]) result.toArray();
+		// return (StemLoopNode[]) result.toArray();
 		return castArray(result);
 
 	}
@@ -170,6 +170,8 @@ public class StemLoop {
 			// this means root's successor, which is undefined
 			return null;
 		}
+		if (i == nodes.length - 1)
+			return nodes[parentIndex];
 		StemLoopNode potentialSuccesor = nodes[i + 1];
 		if (potentialSuccesor.getType() == node.getType())
 			return potentialSuccesor;
@@ -200,7 +202,7 @@ public class StemLoop {
 		List<StemLoopNode> result = new ArrayList<StemLoopNode>();
 		StemLoopNode.NodeType typeA = nodeA.getType();
 		StemLoopNode.NodeType typeB = nodeB.getType();
-		
+
 		// case 1 : nodeB == nodeA
 		if (nodeA.equals(nodeB)) {
 			for (StemLoopNode n : nodes) {
@@ -292,68 +294,69 @@ public class StemLoop {
 						bSeen = true;
 				}
 			}
-		
-		// case4 : nodeA & nodeB both same type of leaves to same parent
-			else if (getParent(nodeA).equals(getParent(nodeB))
-				&& nodeA.getType() == nodeB.getType()) {
-			boolean aSeen1 = false;
-			boolean bSeen1 = false;
 
-			for (StemLoopNode n : nodes) {
-				if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1)) {
+			// case4 : nodeA & nodeB both same type of leaves to same parent
+			else if (getParent(nodeA).equals(getParent(nodeB))
+					&& nodeA.getType() == nodeB.getType()) {
+				boolean aSeen1 = false;
+				boolean bSeen1 = false;
+
+				for (StemLoopNode n : nodes) {
+					if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1)) {
+						if (n.equals(nodeB))
+							bSeen1 = true;
+						if (n.equals(nodeA))
+							aSeen1 = true;
+						if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1))
+							continue;
+					}
+					result.add(n);
 					if (n.equals(nodeB))
 						bSeen1 = true;
 					if (n.equals(nodeA))
 						aSeen1 = true;
-					if ((aSeen1 & !bSeen1) || (!aSeen1 && bSeen1))
-						continue;
-				}
-				result.add(n);
-				if (n.equals(nodeB))
-					bSeen1 = true;
-				if (n.equals(nodeA))
-					aSeen1 = true;
 
+				}
 			}
-		}
-		// case5 : nodeA & nodeB are leaves to same parent, but different types
-		// of nodes
-		else {
-			boolean aSeen2 = false;
-			boolean bSeen2 = false;
-			if (nodeA.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
-				for (StemLoopNode n : nodes) {
-					if (n.equals(nodeB))
-						bSeen2 = true;
-					if (bSeen2) {
-						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
-							break;
-					}
-					if (aSeen2 & !bSeen2)
-						continue;
+			// case5 : nodeA & nodeB are leaves to same parent, but different
+			// types
+			// of nodes
+			else {
+				boolean aSeen2 = false;
+				boolean bSeen2 = false;
+				if (nodeA.getType() == StemLoopNode.NodeType.LEFT_LEAF) {
+					for (StemLoopNode n : nodes) {
+						if (n.equals(nodeB))
+							bSeen2 = true;
+						if (bSeen2) {
+							if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+								break;
+						}
+						if (aSeen2 & !bSeen2)
+							continue;
 
-					if (n.equals(nodeA))
-						aSeen2 = true;
-				}
-			} else {
-				for (StemLoopNode n : nodes) {
-					if (n.equals(nodeA))
-						aSeen2 = true;
-					if (aSeen2) {
-						if (n.getType() == StemLoopNode.NodeType.INTERNAL)
-							break;
+						if (n.equals(nodeA))
+							aSeen2 = true;
 					}
-					if (bSeen2 & !aSeen2)
-						continue;
+				} else {
+					for (StemLoopNode n : nodes) {
+						if (n.equals(nodeA))
+							aSeen2 = true;
+						if (aSeen2) {
+							if (n.getType() == StemLoopNode.NodeType.INTERNAL)
+								break;
+						}
+						if (bSeen2 & !aSeen2)
+							continue;
 
-					if (n.equals(nodeB))
-						bSeen2 = true;
+						if (n.equals(nodeB))
+							bSeen2 = true;
+					}
 				}
 			}
 		}
-		}
-		return new StemLoop(model, castArray(result), id
-				+ "sub" + nodeA.getId() + nodeB.getId());
+		return new StemLoop(model, castArray(result), id + "sub"
+				+ nodeA.getId() + nodeB.getId());
 	}
 
 	private StemLoop(StemLoopModel m, StemLoopNode[] n, String i) {
@@ -373,12 +376,12 @@ public class StemLoop {
 		}
 		return parent;
 	}
-	
-	private StemLoopNode[] castArray(List<StemLoopNode> result){
-		
+
+	private StemLoopNode[] castArray(List<StemLoopNode> result) {
+
 		StemLoopNode[] temp = new StemLoopNode[result.size()];
 		int i = 0;
-		for(StemLoopNode n: result){
+		for (StemLoopNode n : result) {
 			temp[i++] = (StemLoopNode) n;
 		}
 		return temp;
